@@ -1,0 +1,731 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotización de Servicios Odontológicos</title>
+    <style>
+        :root {
+            --primary-color: #0e7490;
+            --secondary-color: #164e63;
+            --accent-color: #0891b2;
+            --light-color: #f0fdfa;
+            --border-color: #cffafe;
+            --success-color: #059669;
+            --dental-blue: #06b6d4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+            color: var(--secondary-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .quote-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.15);
+            overflow: hidden;
+            margin-bottom: 30px;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .quote-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(6, 182, 212, 0.2);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dental-blue));
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-20px, -20px) rotate(360deg); }
+        }
+        
+        .firm-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            position: relative;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .firm-tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            position: relative;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .quote-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+            position: relative;
+            animation: scaleIn 0.8s ease 0.6s both;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .info-item {
+            flex: 1;
+            min-width: 200px;
+            margin: 10px;
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--border-color);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--dental-blue);
+            animation: slideIn 1s ease 0.8s both;
+        }
+        
+        @keyframes slideIn {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .service-card {
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .service-card:hover::before {
+            left: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--dental-blue);
+            box-shadow: 0 15px 30px rgba(6, 182, 212, 0.15);
+        }
+        
+        .service-card.active {
+            border-color: var(--dental-blue);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .service-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .service-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--success-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .service-price::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--success-color);
+            transition: width 0.5s ease;
+        }
+        
+        .service-card:hover .service-price::after {
+            width: 100%;
+        }
+        
+        .service-description {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            line-height: 1.5;
+        }
+        
+        .breakdown {
+            background: var(--light-color);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .breakdown.active {
+            display: block;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+        
+        .breakdown-item:hover {
+            background-color: rgba(6, 182, 212, 0.05);
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 0 -10px;
+            border-radius: 8px;
+        }
+        
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-label {
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+        
+        .breakdown-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .total-section {
+            background: linear-gradient(135deg, var(--light-color), #ffffff);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .total-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(6, 182, 212, 0.1), transparent 30%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        
+        .total-label {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            position: relative;
+        }
+        
+        .total-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .whatsapp-btn:hover::before {
+            left: 100%;
+        }
+        
+        .whatsapp-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(37, 211, 102, 0.4);
+        }
+        
+        .whatsapp-btn:active {
+            transform: translateY(0) scale(1);
+        }
+        
+        .whatsapp-btn i {
+            margin-right: 12px;
+            font-size: 1.4rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            border-top: 2px solid var(--border-color);
+            margin-top: 40px;
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--dental-blue), transparent);
+        }
+        
+        @media (max-width: 768px) {
+            .firm-name {
+                font-size: 2rem;
+            }
+            
+            .quote-info {
+                flex-direction: column;
+            }
+            
+            .info-item {
+                margin-bottom: 15px;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-card:hover {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quote-card">
+            <div class="header">
+                <h1 class="firm-name">Centro Odontológico Sonrisa Perfecta</h1>
+                <p class="firm-tagline">Especialistas en salud bucal y estética dental</p>
+                
+                <div class="quote-info">
+                    <div class="info-item">
+                        <div class="info-label">Número de Cotización</div>
+                        <div class="info-value">#OD-2023-0452</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Fecha de Emisión</div>
+                        <div class="info-value" id="current-date">15 de Noviembre, 2023</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Válida hasta</div>
+                        <div class="info-value">30 de Noviembre, 2023</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content">
+                <h2 class="section-title">Servicios Odontológicos Premium</h2>
+                
+                <div class="services-grid">
+                    <!-- Servicio 1 -->
+                    <div class="service-card" id="service1">
+                        <div class="service-icon">🦷</div>
+                        <h3 class="service-title">Ortodoncia Completa</h3>
+                        <div class="service-price">$4.500.000 COP</div>
+                        <p class="service-description">Tratamiento de ortodoncia completo con brackets metálicos, incluyendo todos los controles y ajustes mensuales por 24 meses.</p>
+                        
+                        <div class="breakdown" id="breakdown1">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Estudio diagnóstico y planificación</span>
+                                <span class="breakdown-value">$500.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Aplicación de brackets (arcada completa)</span>
+                                <span class="breakdown-value">$1.800.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">24 controles mensuales de ajuste</span>
+                                <span class="breakdown-value">$1.800.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Retenedores finales</span>
+                                <span class="breakdown-value">$400.000</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Servicio 2 -->
+                    <div class="service-card" id="service2">
+                        <div class="service-icon">😁</div>
+                        <h3 class="service-title">Blanqueamiento Dental</h3>
+                        <div class="service-price">$850.000 COP</div>
+                        <p class="service-description">Blanqueamiento dental profesional en consultorio con tecnología LED, incluye kit de mantenimiento para casa.</p>
+                        
+                        <div class="breakdown" id="breakdown2">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Limpieza dental profesional previa</span>
+                                <span class="breakdown-value">$150.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Sesión de blanqueamiento con LED</span>
+                                <span class="breakdown-value">$450.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Kit de mantenimiento (2 jeringas)</span>
+                                <span class="breakdown-value">$200.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Control post-tratamiento</span>
+                                <span class="breakdown-value">$50.000</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Servicio 3 -->
+                    <div class="service-card" id="service3">
+                        <div class="service-icon">🦷</div>
+                        <h3 class="service-title">Implante Dental Unitario</h3>
+                        <div class="service-price">$2.800.000 COP</div>
+                        <p class="service-description">Implante dental completo con corona incluida. Incluye cirugía, implante de titanio y corona definitiva.</p>
+                        
+                        <div class="breakdown" id="breakdown3">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Estudio radiográfico y planificación</span>
+                                <span class="breakdown-value">$200.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Cirugía de colocación del implante</span>
+                                <span class="breakdown-value">$1.200.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Implante de titanio de alta calidad</span>
+                                <span class="breakdown-value">$800.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Corona dental definitiva</span>
+                                <span class="breakdown-value">$600.000</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Servicio 4 -->
+                    <div class="service-card" id="service4">
+                        <div class="service-icon">🦷</div>
+                        <h3 class="service-title">Rehabilitación Oral Completa</h3>
+                        <div class="service-price">$8.500.000 COP</div>
+                        <p class="service-description">Tratamiento integral que incluye prótesis fija, implantes y reconstrucción de toda la arcada dental.</p>
+                        
+                        <div class="breakdown" id="breakdown4">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Estudio completo y tomografía 3D</span>
+                                <span class="breakdown-value">$600.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Extracciones y preparación</span>
+                                <span class="breakdown-value">$1.200.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Implantes (4 unidades)</span>
+                                <span class="breakdown-value">$3.200.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Prótesis fija completa</span>
+                                <span class="breakdown-value">$3.500.000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 5 NUEVO -->
+                    <div class="service-card" id="service5">
+                        <div class="service-icon">🦷</div>
+                        <h3 class="service-title">Carillas Estéticas de Porcelana</h3>
+                        <div class="service-price">$1.200.000 COP</div>
+                        <p class="service-description">Carillas de porcelana personalizadas para mejorar forma, color y alineación de dientes anteriores (6 unidades).</p>
+                        
+                        <div class="breakdown" id="breakdown5">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Diagnóstico y diseño de sonrisa</span>
+                                <span class="breakdown-value">$200.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Preparación dental mínima</span>
+                                <span class="breakdown-value">$300.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Carillas de porcelana (6 unidades)</span>
+                                <span class="breakdown-value">$600.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Cementación y ajustes finales</span>
+                                <span class="breakdown-value">$100.000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 6 NUEVO -->
+                    <div class="service-card" id="service6">
+                        <div class="service-icon">🦷</div>
+                        <h3 class="service-title">Periodoncia Especializada</h3>
+                        <div class="service-price">$1.800.000 COP</div>
+                        <p class="service-description">Tratamiento completo para enfermedad periodontal, incluye curetajes, raspados y mantenimiento periodontal.</p>
+                        
+                        <div class="breakdown" id="breakdown6">
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Estudio periodontal completo</span>
+                                <span class="breakdown-value">$250.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Raspado y curetaje (4 sesiones)</span>
+                                <span class="breakdown-value">$1.000.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Terapia antibiótica localizada</span>
+                                <span class="breakdown-value">$300.000</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">Controles de mantenimiento (3 meses)</span>
+                                <span class="breakdown-value">$250.000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="total-section">
+                    <div class="total-label">Total para tratamiento completo:</div>
+                    <div class="total-amount">$19.650.000 COP</div>
+                    <p style="margin-top: 15px; font-size: 1rem; position: relative;">* Incluye plan de financiamiento hasta 24 meses sin intereses</p>
+                    
+                    <a href="https://wa.me/573001234567?text=Hola,%20estoy%20interesado%20en%20los%20servicios%20odontológicos%20de%20su%20cotización%20#OD-2023-0452" class="whatsapp-btn" target="_blank">
+                        <i>📱</i> Agendar Cita por WhatsApp
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>Esta cotización es válida por 15 días a partir de la fecha de emisión. Incluye garantía por todos los procedimientos.</p>
+                <p>Centro Odontológico Sonrisa Perfecta | NIT: 900.876.543-2 | Tel: +57 (1) 345 6789</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Establecer la fecha actual
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('es-CO', options);
+            
+            // Agregar interactividad a las tarjetas de servicio
+            const serviceCards = document.querySelectorAll('.service-card');
+            
+            serviceCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remover clase active de todas las tarjetas
+                    serviceCards.forEach(c => {
+                        c.classList.remove('active');
+                        const breakdown = c.querySelector('.breakdown');
+                        if (breakdown) {
+                            breakdown.classList.remove('active');
+                        }
+                    });
+                    
+                    // Agregar clase active a la tarjeta clickeada
+                    this.classList.add('active');
+                    
+                    // Mostrar el desglose de la tarjeta clickeada
+                    const breakdown = this.querySelector('.breakdown');
+                    if (breakdown) {
+                        breakdown.classList.add('active');
+                    }
+                });
+            });
+            
+            // Efectos de aparición escalonada para las tarjetas
+            serviceCards.forEach((card, index) => {
+                card.style.animation = `fadeInUp 0.8s ease ${index * 0.2}s both`;
+            });
+            
+            // Simular clic en la primera tarjeta al cargar
+            if (serviceCards.length > 0) {
+                setTimeout(() => {
+                    serviceCards[0].click();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
